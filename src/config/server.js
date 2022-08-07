@@ -1,0 +1,1 @@
+export const APIBaseUrl = 'https://iranocc.com/wp-json/';

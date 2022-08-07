@@ -12,6 +12,8 @@ import rtlPlugin from "stylis-plugin-rtl";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import Zoom from '@mui/material/Zoom';
+import Splash from "./scenes/splash";
+
 
 
 const cacheRtl = createCache({
@@ -56,9 +58,9 @@ const theme = createTheme({
           ),
           ...(
             ownerState.size === 'large' && {
-              height: "48px",
-              fontSize: "1rem",
-              fontWeight: 700,
+              height: "56px",
+              fontSize: "1.2rem",
+              fontWeight: 500,
             }
           ),
 
@@ -79,7 +81,7 @@ const theme = createTheme({
           },
           ...(
             !ownerState.multiline && {
-              height: "48px",
+              height: "56px",
             }
           ),
         }),
@@ -124,7 +126,7 @@ const theme = createTheme({
         root: ({ ownerState }) => ({
           background: "linear-gradient(215.33deg, #FFE600 0, #FFC700 70.74%) !important",
           color: "#111111",
-          height: "48px",
+          height: "56px",
           borderRadius: "30px",
           boxShadow: "0px 0px 20px - 10px rgba(0, 0, 0, 0.25)",
           ...(
@@ -145,28 +147,35 @@ const theme = createTheme({
 
 
 
-
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
+    <Splash />
+  </ThemeProvider>,
+  document.getElementById('splash-root')
+)
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <CacheProvider value={cacheRtl}>
         <ThemeProvider theme={theme}>
-
           <SnackbarProvider
             maxSnack={5}
             TransitionComponent={Zoom}
           >
             <App />
           </SnackbarProvider>
-
-
         </ThemeProvider>
       </CacheProvider >
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+
+
+
+
 
 serviceWorker.unregister();
 

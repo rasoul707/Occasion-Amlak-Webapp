@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Grid, Zoom } from "@mui/material"
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, Route, Switch, useHistory } from "react-router-dom";
 import * as React from 'react';
 import AppBar from "../../../components/AppBar"
 import TextField from "../../../components/TextField"
@@ -11,32 +11,14 @@ import { typeFileConvert2Persian } from "../../../constants/file"
 import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab'
 import * as API from "../../../api";
-import NumberFormat from 'react-number-format';
+
 
 import { Success, Error } from "./Result"
 
 import { useDispatch, } from "react-redux";
 
-const PriceFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
-    const { onChange, ...other } = props;
-
-    return (
-        <NumberFormat
-            {...other}
-            getInputRef={ref}
-            onValueChange={(values) => {
-                onChange({
-                    target: {
-                        name: props.name,
-                        value: values.value,
-                    },
-                });
-            }}
-            thousandSeparator
-            isNumericString
-        />
-    );
-});
+import { FullMap } from "../../../components/LocationChooser"
+import { PriceFormatCustom } from "../../../components/TextField"
 
 
 
@@ -173,13 +155,28 @@ const Page = () => {
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
+                <Switch>
+                    <Route
+                        path="/new/land/extra/fullmap"
+                        exact
+                        render={() => {
+                            return <FullMap
+                                location={location}
+                                setLocation={setLocation}
+                                disabled={disabled}
+                            />
+                        }}
+                    />
+                </Switch>
+
+
                 <Box sx={{ maxWidth: 400, width: 400, }}>
                     <AppBar
                         title={"ثبت " + persianFileType}
                     />
-                    <Box sx={{ p: 3, }}>
-                        <Grid container direction="stretch" spacing={3} alignItems="center" justifyContent="center">
-                            <Grid item xs={12}>
+                    <Box sx={{ m: 3, }}>
+                        <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                            <Grid item>
                                 <ImageChooser
                                     pictures={pictures}
                                     setPictures={setPictures}
@@ -190,7 +187,7 @@ const Page = () => {
                                     disabled={disabled}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="قیمت هر متر مربع (تومان)"
                                     autoComplete="true"
@@ -204,7 +201,7 @@ const Page = () => {
                                 />
 
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="شهر"
                                     autoComplete="true"
@@ -215,7 +212,7 @@ const Page = () => {
                                     inputProps={{ style: { direction: 'rtl', } }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="منطقه"
                                     autoComplete="true"
@@ -226,7 +223,7 @@ const Page = () => {
                                     inputProps={{ style: { direction: 'rtl', } }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="محله"
                                     autoComplete="true"
@@ -237,7 +234,7 @@ const Page = () => {
                                     inputProps={{ style: { direction: 'rtl', } }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="کوچه"
                                     autoComplete="true"
@@ -248,7 +245,7 @@ const Page = () => {
                                     inputProps={{ style: { direction: 'rtl', } }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="توضیحات"
                                     autoComplete="true"
@@ -261,14 +258,14 @@ const Page = () => {
                                     inputProps={{ style: { direction: 'rtl', } }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <LocationChooser
                                     location={location}
                                     setLocation={setLocation}
                                     disabled={disabled}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <LoadingButton
                                     variant="contained"
                                     size="large"

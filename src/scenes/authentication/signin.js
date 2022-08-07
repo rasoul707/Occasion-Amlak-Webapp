@@ -81,54 +81,49 @@ const SignIn = () => {
 
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Box sx={{ maxWidth: 400, width: 400, }}>
-                <Box sx={{ p: 3, }}>
-                    <Grid container direction="column" spacing={4} alignItems="stretch" justifyContent="center">
-                        <Grid item xs={12}>
-                            <Logo />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography align="center" variant="h5" sx={{ fontWeight: 900, mt: 6, mb: 3, color: "#111111" }}>فرم ورود</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="نام کاربری"
-                                autoComplete="true"
-                                type="text"
-                                value={username}
-                                onChange={(e) => { setUsername(e.target.value) }}
-                                disabled={disabled}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="رمز اکانت"
-                                autoComplete="true"
-                                type="password"
-                                value={password}
-                                onChange={(e) => { setPassword(e.target.value) }}
-                                disabled={disabled}
-                                onKeyDown={(e) => e.key === 'Enter' && submit()}
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <LoadingButton
-                                variant="contained"
-                                size="large"
-                                sx={{ mt: 5 }}
-                                children="ورود به سامانه"
-                                onClick={submit}
-                                disabled={disabled}
-                                loading={loading}
-                                fullWidth
-                            />
-                        </Grid>
-
-
-
+        <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+            <Box sx={{ maxWidth: 400, width: '100%', m: 3 }}>
+                <Grid container direction="column" spacing={4} alignItems="stretch" justifyContent="center">
+                    <Grid item >
+                        <Logo />
                     </Grid>
-                </Box>
+                    <Grid item>
+                        <Typography align="center" variant="h5" sx={{ fontWeight: 700, mt: 6, mb: 1, color: "#111111" }}>فرم ورود</Typography>
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="نام کاربری"
+                            autoComplete="true"
+                            type="text"
+                            value={username}
+                            onChange={(e) => { setUsername(e.target.value) }}
+                            disabled={disabled}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            label="رمز اکانت"
+                            autoComplete="true"
+                            type="password"
+                            value={password}
+                            onChange={(e) => { setPassword(e.target.value) }}
+                            disabled={disabled}
+                            onKeyDown={(e) => e.key === 'Enter' && submit()}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <LoadingButton
+                            variant="contained"
+                            size="large"
+                            sx={{ mt: 5 }}
+                            children="ورود به سامانه"
+                            onClick={submit}
+                            disabled={disabled}
+                            loading={loading}
+                            fullWidth
+                        />
+                    </Grid>
+                </Grid>
             </Box>
         </Box>
     );

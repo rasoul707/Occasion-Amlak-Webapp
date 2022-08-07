@@ -2,25 +2,36 @@ const cacheName = "cache-v1";
 const staticAssets = [
     '/',
 
-
-    '/auth/signin',
-
     '/index.html',
     '/favicon.ico',
-
     '/manifest.webmanifest',
-
     '/logo192.png',
     '/logo512.png',
     '/logo192masked.png',
     '/logo512masked.png',
 
-    '/static/media/logo.e49f7f96.png',
+    "/auth/signin",
+    "/new",
+    "/new/villa",
+    "/new/villa/extra",
+    "/new/apartment",
+    "/new/apartment/extra",
+    "/new/land",
+    "/new/land/extra",
+    "/new/commercial",
+    "/new/commercial/extra",
+    "/new/hectare",
+    "/new/hectare/extra",
+    "/search",
+    "/file/",
+    "/logout"
 
 
-    '/static/js/bundle.js',
-    '/static/js/vendors~main.chunk.js',
-    '/static/js/main.chunk.js',
+
+    // '/static/media/logo.e49f7f96.png',
+    // '/static/js/2.863a32a9.chunk.js',
+    // '/static/js/main.ccb9125d.chunk.js',
+    // '/static/css/main.4c165271.chunk.css',
 ]
 
 self.addEventListener('install', async event => {

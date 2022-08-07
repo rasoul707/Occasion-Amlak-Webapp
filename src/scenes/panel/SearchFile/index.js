@@ -2,12 +2,12 @@
 import { Box, Grid, Zoom, Slider, InputLabel, Typography, Select, MenuItem, } from "@mui/material"
 import * as React from 'react';
 import AppBar, { Leading } from "../../../components/AppBar"
-import { fileTypesList, typeConvert2Slug } from "../../../constants/file"
+import { fileTypesList, typeConvert2Slug, typeFileConvert2Persian } from "../../../constants/file"
 import { useSnackbar } from 'notistack';
 import * as API from "../../../api";
 
 import SelectOption from "../../../components/SelectOption";
-import TextField from "../../../components/TextField";
+import TextField, { JustPersianFormatCustom } from "../../../components/TextField";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -17,6 +17,8 @@ import FilesList from "../FilesList"
 import moment from "moment";
 import { useDispatch, } from "react-redux";
 
+import { useHistory, useLocation } from "react-router-dom";
+import NumberFormat from 'react-number-format';
 
 
 const sortingList = [
@@ -39,7 +41,13 @@ const sortingList = [
 ]
 
 
+const minPrice = 0
+const maxPrice = 100000000
+
 const Page = () => {
+
+    const history = useHistory()
+    const location = useLocation()
 
     const dispatch = useDispatch()
     const appLoader = (payload) => dispatch({ type: 'BACKDROP', payload: { backdrop: payload } })
@@ -69,21 +77,26 @@ const Page = () => {
 
 
     const submit = async () => {
-
         closeSnackbar()
 
-        setLoading(true)
-        setDisabled(true)
-
         const _type = type.map(typeConvert2Slug)
-        let queryParam = `type=${_type.join(",")}&price=${price.join(",")}`
+        let queryParam = `price=${price.join(",")}`
+        if (_type.length) queryParam += `&type=${_type.join(",")}`
         if (district) queryParam += `&district=${district}`
         if (area) queryParam += `&area=${area}`
         if (buildingArea) queryParam += `&buildingArea=${buildingArea}`
 
+        history.replace(`/search?${queryParam}`)
+    }
+
+
+
+    const search = async (queryParam) => {
+        setLoading(true)
+        setDisabled(true)
 
         try {
-            const response = await API.GET(false)(`rapp/v1/searchFile?${queryParam}`)
+            const response = await API.GET(false)(`rapp/v1/searchFile${queryParam}`)
             if (!response.data?.files?.length) {
                 enqueueSnackbar("چیزی یافت نشد! دوباره تلاش کنید", { variant: "error" })
             }
@@ -93,10 +106,23 @@ const Page = () => {
             API.ResponseError(enqueueSnackbar, error)
         }
 
-
         setLoading(false)
         setDisabled(false)
     }
+    React.useEffect(() => {
+        setFileList([])
+        if (location.search) search(location.search)
+    }, [location])
+
+
+    React.useEffect(() => {
+        const params = Object.fromEntries(new URLSearchParams(location.search))
+        if (params?.price?.split(",").length) setPrice(params?.price?.split(","))
+        if (params?.type?.split(",").length) setType(params?.type?.split(",").map(typeFileConvert2Persian))
+        setDistrict(params?.district || district)
+        setArea(params?.area || area)
+        setBuildingArea(params?.buildingArea || buildingArea)
+    }, [])
 
 
 
@@ -175,14 +201,27 @@ const Page = () => {
                                 </InputLabel>
                                 <Slider
                                     step={2500000}
-                                    marks
-                                    min={0}
-                                    max={100000000}
+                                    min={minPrice}
+                                    max={maxPrice}
                                     valueLabelDisplay="auto"
                                     value={price}
                                     onChange={(e, val) => setPrice(val)}
                                     disabled={disabled}
                                 />
+                                <InputLabel
+                                    focused
+                                    disableAnimation={true}
+                                    sx={{ fontSize: ".75rem" }}
+                                >
+                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                        <span>
+                                            <NumberFormat value={minPrice} displayType={'text'} thousandSeparator={true} />
+                                        </span>
+                                        <span>
+                                            <NumberFormat value={maxPrice} displayType={'text'} thousandSeparator={true} />
+                                        </span>
+                                    </div>
+                                </InputLabel>
                             </Grid>
                             <Grid item xs={12}>
                                 <SelectOption
@@ -212,6 +251,9 @@ const Page = () => {
                                     value={area}
                                     onChange={(e) => setArea(e.target.value)}
                                     disabled={disabled}
+                                    InputProps={{
+                                        inputComponent: JustPersianFormatCustom,
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -222,6 +264,9 @@ const Page = () => {
                                     value={buildingArea}
                                     onChange={(e) => setBuildingArea(e.target.value)}
                                     disabled={disabled}
+                                    InputProps={{
+                                        inputComponent: JustPersianFormatCustom,
+                                    }}
                                 />
                             </Grid>
                             <Grid item xs={12}>

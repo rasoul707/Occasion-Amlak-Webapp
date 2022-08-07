@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Grid, Typography, Button, Fade, Box } from "@mui/material"
-import { Link as LinkRoute } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import * as React from 'react';
 import SuccessIcon from "../../../assets/images/success.png"
 import ErrorIcon from "../../../assets/images/error.png"
@@ -28,6 +28,9 @@ export const Error = () => {
 
 
 const Concept = ({ imgSrc, title, subtitle }) => {
+
+    const history = useHistory()
+
     return (
         <Fade in={true} mountOnEnter unmountOnExit >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
@@ -48,8 +51,9 @@ const Concept = ({ imgSrc, title, subtitle }) => {
                                     color="inherit"
                                     sx={{ mt: 2 }}
                                     children="بازگشت به خانه"
-                                    component={LinkRoute}
-                                    to="/"
+                                    onClick={() => {
+                                        history.replace("/")
+                                    }}
                                     fullWidth
                                 />
                             </Grid>

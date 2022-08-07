@@ -16,6 +16,8 @@ import AddLand from "./AddFile/FileTypes/Land"
 import AddCommercial from "./AddFile/FileTypes/Commercial"
 import AddHectare from "./AddFile/FileTypes/Hectare"
 
+
+
 const Panel = () => {
 
     const history = useHistory()
@@ -37,25 +39,26 @@ const Panel = () => {
             <Route path="/new" exact component={AddFile} />
 
             <Route path="/new/villa" exact component={AddVilla} />
-            <Route path="/new/villa/extra" exact component={AddFileExtra} />
+            <Route path="/new/villa/extra" component={AddFileExtra} />
 
             <Route path="/new/apartment" exact component={AddApartment} />
-            <Route path="/new/apartment/extra" exact component={AddFileExtra} />
+            <Route path="/new/apartment/extra" component={AddFileExtra} />
 
             <Route path="/new/land" exact component={AddLand} />
-            <Route path="/new/land/extra" exact component={AddFileExtra} />
+            <Route path="/new/land/extra" component={AddFileExtra} />
 
             <Route path="/new/commercial" exact component={AddCommercial} />
-            <Route path="/new/commercial/extra" exact component={AddFileExtra} />
+            <Route path="/new/commercial/extra" component={AddFileExtra} />
 
             <Route path="/new/hectare" exact component={AddHectare} />
-            <Route path="/new/hectare/extra" exact component={AddFileExtra} />
+            <Route path="/new/hectare/extra" component={AddFileExtra} />
 
             <Route path="/search" exact component={SearchFile} />
 
             <Route path="/file/:id" exact component={FileView} />
 
-            <Route path="/" exact component={Home} />
+
+            <Route path="/" component={Home} />
             <Redirect to="/" />
         </Switch>
     </Box>

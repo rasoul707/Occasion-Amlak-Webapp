@@ -35,6 +35,7 @@ const FilesView = () => {
 
 
     React.useEffect(() => {
+        appLoader(true)
         const getDate = async () => {
             const { id } = params
             try {
@@ -48,9 +49,9 @@ const FilesView = () => {
         getDate()
     }, [])
 
-
-    const thumbUrl = file?.picturesUrl[activePicture]?.thumbnail[0]
     const picturesUrl = file?.picturesUrl
+    const thumbUrl = picturesUrl && picturesUrl.length > 0 && picturesUrl[activePicture]?.thumbnail[0]
+
     let title = ""
     let detail = []
     let documentType = ""
@@ -198,7 +199,7 @@ const FileDocumentType = ({ documentType }) => {
 
 
 const FileEquipmentsType = ({ equipments }) => {
-    if (equipments.length === 0) return null
+    if (!equipments?.length) return null
     return <>
         <Typography sx={{ fontWeight: 900 }} textAlign="start" variant="h6" >
             امکانات:

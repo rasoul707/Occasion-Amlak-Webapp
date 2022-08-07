@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Backdrop, CircularProgress, } from '@mui/material';
 
 
-
 import './App.css';
 
 
@@ -40,7 +39,6 @@ function App() {
     }
     else {
       setLoadMain(true)
-
     }
   }
 
@@ -62,9 +60,7 @@ function App() {
         window.location.reload()
       }
     }
-
     setLoadMain(true)
-
   }
 
 

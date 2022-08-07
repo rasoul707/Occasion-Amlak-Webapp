@@ -3,7 +3,7 @@ import { Box, Grid, Zoom } from "@mui/material"
 import { useHistory, useLocation } from "react-router-dom";
 import * as React from 'react';
 import AppBar from "../../../../components/AppBar"
-import TextField from "../../../../components/TextField"
+import TextField, { JustPersianFormatCustom } from "../../../../components/TextField"
 import SelectOption from "../../../../components/SelectOption"
 import { commercialTypesList, documentsTypeList, typeFileConvert2Persian } from "../../../../constants/file"
 import { useSnackbar } from 'notistack';
@@ -101,9 +101,9 @@ const Page = () => {
                     <AppBar
                         title={"ثبت " + persianFileType}
                     />
-                    <Box sx={{ p: 3, }}>
-                        <Grid container direction="stretch" spacing={3} alignItems="center" justifyContent="center">
-                            <Grid item xs={12}>
+                    <Box sx={{ m: 3, }}>
+                        <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                            <Grid item>
                                 <SelectOption
                                     items={commercialTypesList}
                                     value={type}
@@ -111,17 +111,20 @@ const Page = () => {
                                     disabled={disabled}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="متراژ زمین"
                                     autoComplete="true"
-                                    type="number"
+                                    type="text"
                                     value={area}
                                     onChange={(e) => setArea(e.target.value)}
                                     disabled={disabled}
+                                    InputProps={{
+                                        inputComponent: JustPersianFormatCustom,
+                                    }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <SelectOption
                                     items={documentsTypeList}
                                     value={documentType}
@@ -129,28 +132,34 @@ const Page = () => {
                                     disabled={disabled}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="طبقه ملک"
                                     autoComplete="true"
-                                    type="number"
+                                    type="text"
                                     value={floor}
                                     onChange={(e) => setFloor(e.target.value)}
                                     disabled={disabled}
+                                    InputProps={{
+                                        inputComponent: JustPersianFormatCustom,
+                                    }}
                                 />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <TextField
                                     label="متراژ بر تجاری"
                                     autoComplete="true"
-                                    type="number"
+                                    type="text"
                                     value={commercialArea}
                                     onChange={(e) => setCommercialArea(e.target.value)}
                                     disabled={disabled}
+                                    InputProps={{
+                                        inputComponent: JustPersianFormatCustom,
+                                    }}
                                 />
                             </Grid>
 
-                            <Grid item xs={12}>
+                            <Grid item>
                                 <LoadingButton
                                     variant="contained"
                                     size="large"

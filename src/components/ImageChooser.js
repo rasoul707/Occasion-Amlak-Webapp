@@ -75,8 +75,8 @@ const ImageChooser = ({ pictures, setPictures, thumb, setThumb, uploaded, upload
 
             <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
                 <Box sx={{ maxWidth: 400, width: 400, }}>
-                    <Box sx={{ p: 3, }}>
-                        <Typography align="center" variant="h5" sx={{ fontWeight: 900, color: "#111111" }}>
+                    <Box sx={{ m: 3, }}>
+                        <Typography align="center" noWrap variant="h5" sx={{ fontWeight: 700, color: "#111111" }}>
                             تصاویر {pictures.length > 0 && "(" + pictures.length + ")"}
                         </Typography>
                         <Grid container direction="row" spacing={2} alignItems="center" justifyContent="center" sx={{ mt: 2 }}>
@@ -84,10 +84,13 @@ const ImageChooser = ({ pictures, setPictures, thumb, setThumb, uploaded, upload
                                 <Button
                                     variant="contained"
                                     size="medium"
-                                    children="از دوربین"
+                                    component="label"
                                     fullWidth
-                                    disabled
-                                />
+                                    disabled={disabled}
+                                >
+                                    از دوربین
+                                    <input accept="image/*" type="file" style={{ display: "none" }} capture="camera" multiple onChange={handleChooseImage} disabled={disabled} />
+                                </Button>
                             </Grid>
                             <Grid item xs={6}>
                                 <Button
@@ -123,7 +126,7 @@ const ImageChooser = ({ pictures, setPictures, thumb, setThumb, uploaded, upload
                                                 srcSet={`${path}`}
                                                 alt={file.name}
                                                 loading="lazy"
-                                                sx={{ objectFit: "fill", cursor: "pointer" }}
+                                                sx={{ objectFit: "fill", cursor: "pointer", aspectRatio: 1 }}
                                             />
 
                                             {disabled ? null :

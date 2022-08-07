@@ -34,7 +34,7 @@ const ResponsiveAppBar = ({ title, center = true, titleVariant = "h5", autoLeadi
 
                 >
                     {title &&
-                        <Typography align="center" noWrap variant={titleVariant} sx={{ fontWeight: 900, color: "#111111" }}>
+                        <Typography align="center" noWrap variant={titleVariant} sx={{ fontWeight: 700, color: "#111111" }}>
                             {title}
                         </Typography>
                     }

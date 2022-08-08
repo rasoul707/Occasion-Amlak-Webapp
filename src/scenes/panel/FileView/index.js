@@ -275,17 +275,9 @@ const FocusPicture = ({ title, src }) => {
 
 const PicturesList = ({ pictures, title, activePicture, setActivePicture }) => {
 
-    // loading
-    if (!pictures) return <Stack direction="row" spacing={2} sx={{ pb: 1, pt: 2, overflowX: "scroll", }}>
-        {[1, 2, 3]?.map(({ thumbnail }, index) => {
-            return <PictureItem
-                title={title}
-            />
-        })}
-    </Stack>
 
 
-    if (pictures?.length <= 1) return null
+    if (!pictures || pictures?.length <= 1) return null
 
     return <Stack direction="row" spacing={2} sx={{ pb: 1, pt: 2, ml: 2, mr: 2, overflowX: "scroll", }}>
         {pictures?.map(({ thumbnail }, index) => {

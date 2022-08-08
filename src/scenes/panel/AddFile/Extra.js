@@ -13,13 +13,13 @@ import { LoadingButton } from '@mui/lab'
 import * as API from "../../../api";
 
 
-import { Success, Error } from "./Result"
+import { Success as SuccessAdd, Error as ErrorAdd } from "./Result"
 
 import { useDispatch, } from "react-redux";
 
 import { FullMap } from "../../../components/LocationChooser"
 import { PriceFormatCustom } from "../../../components/TextField"
-
+import validex from 'validex'
 
 
 const Page = () => {
@@ -100,32 +100,64 @@ const Page = () => {
 
         closeSnackbar()
 
+        let data = {
+            type: fileType,
+            city,
+            district,
+            quarter,
+            alley,
+            location,
+            price: parseInt(price),
+            description,
+            pictures: [],
+            thumb: null,
+            [fileType]: mainData
+        }
+
+
+
+
+
+        const schema = {
+            price: {
+                nameAlias: "قیمت",
+                required: [true, new Error("$field الزامی است")],
+                type: ['number', new Error("$field به درستی وارد نشده است")]
+            },
+            city: {
+                nameAlias: "شهر",
+                required: [true, new Error("$field الزامی است")],
+            },
+            district: {
+                nameAlias: "منطقه",
+                required: [true, new Error("$field الزامی است")],
+            },
+
+        }
+
+
+        const validator = validex(data, schema)
+        const isValidate = validator.validate()
+
+        if (!isValidate) {
+            const errors = validator.getError()
+            return enqueueSnackbar(Object.values(errors)[0], { variant: "error" })
+        }
+
+
         setLoading(true)
         setDisabled(true)
 
 
         try {
 
-            let upload = { picturesID: [], thumbID: null }
             if (pictures.length > 0) {
                 const uploadingSnackKey = enqueueSnackbar("در حال آپلود تصاویر...", { variant: 'info', autoHideDuration: null })
-                upload = await handleUpload()
+                const { picturesID, thumbID } = await handleUpload()
                 closeSnackbar(uploadingSnackKey)
-            }
 
-
-            const data = {
-                type: fileType,
-                city,
-                district,
-                quarter,
-                alley,
-                location,
-                price,
-                description,
-                pictures: upload.picturesID,
-                thumb: upload.thumbID,
-                [fileType]: mainData
+                data.pictures = picturesID
+                data.thumb = thumbID
             }
 
             await API.POST(true)('rapp/v1/addFile', data)
@@ -150,8 +182,8 @@ const Page = () => {
 
     const persianFileType = typeFileConvert2Persian(fileType)
 
-    if (success) return <Success />
-    if (error) return <Error />
+    if (success) return <SuccessAdd />
+    if (error) return <ErrorAdd />
 
     return (
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>

@@ -3,7 +3,7 @@ import { APIBaseUrl as baseUrl } from "../config/server"
 
 
 const headers = () => { return { headers: { Authorization: `${localStorage.getItem('access_token')}` } } }
-const defaultConfig = () => { return { timeout: 30000 } }
+const defaultConfig = () => { return { timeout: 120000 } }
 
 export const POST = (withToken = true, config = {}) => async (url = '', data = {}) => {
     if (!config) config = {}

@@ -54,7 +54,7 @@ const Page = () => {
     const [quarter, setQuarter] = React.useState(null)
     const [alley, setAlley] = React.useState(null)
     const [description, setDescription] = React.useState(null)
-    const [location, setLocation] = React.useState([35.6973918, 51.3476617, 15])
+    const [location, setLocation] = React.useState([36.654954, 51.420534, 15])
 
 
     // ****
@@ -62,37 +62,25 @@ const Page = () => {
     const [fullmap, setFullmap] = React.useState(false)
 
     const handleUpload = async () => {
-        return new Promise(async (resolve, reject) => {
-            let thumbID = null, picturesID = []
-            setUploading(true)
-            setUploaded([])
-            let upo = []
+        let thumbID = null, picturesID = []
+        setUploading(true)
+        setUploaded([])
+        let upo = []
 
-            for (let pic in pictures) {
-                const formData = new FormData();
-                formData.append("file", pictures[pic]);
-                try {
-                    const config = {
-                        onUploadProgress: (progressEvent) => {
-                            // console.log(progressEvent.loaded)
-                        }
-                    }
-                    const response = await API.POST(true, config)('wp/v2/media/', formData)
-
-                    if (parseInt(pic) === thumbIndex) thumbID = response.data.id
-                    else picturesID.push(response.data.id)
-                    upo.push(pic)
-
-                } catch (error) {
-                    reject(error)
-                }
-            }
-
+        for (let pic in pictures) {
+            const formData = new FormData();
+            formData.append("file", pictures[pic]);
+            const response = await API.POST(true)('wp/v2/media/', formData)
+            if (parseInt(pic) === thumbIndex) thumbID = response.data.id
+            else picturesID.push(response.data.id)
+            upo.push(pic)
             setUploaded(upo)
-            setUploading(false)
-            picturesID = [thumbID].concat(picturesID)
-            resolve({ thumbID, picturesID })
-        })
+        }
+
+
+        setUploading(false)
+        picturesID = [thumbID].concat(picturesID)
+        return { thumbID, picturesID }
     }
 
 
@@ -132,7 +120,6 @@ const Page = () => {
                 nameAlias: "منطقه",
                 required: [true, new Error("$field الزامی است")],
             },
-
         }
 
 
@@ -149,13 +136,14 @@ const Page = () => {
         setDisabled(true)
 
 
+
+
         try {
 
             if (pictures.length > 0) {
                 const uploadingSnackKey = enqueueSnackbar("در حال آپلود تصاویر...", { variant: 'info', autoHideDuration: null })
                 const { picturesID, thumbID } = await handleUpload()
                 closeSnackbar(uploadingSnackKey)
-
                 data.pictures = picturesID
                 data.thumb = thumbID
             }
@@ -166,8 +154,10 @@ const Page = () => {
 
         } catch (error) {
             closeSnackbar()
-            API.ResponseError(enqueueSnackbar, error)
+            enqueueSnackbar("ERR: " + error, { variant: "error" })
+            // API.ResponseError(enqueueSnackbar, error)
             setError(true)
+            console.error(error)
         }
 
         setLoading(false)

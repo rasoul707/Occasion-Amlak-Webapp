@@ -11,7 +11,7 @@ import L from "leaflet"
 const LocationChooser = ({ location, setLocation, disabled, fullMap }) => {
     return <Card sx={{ height: 200, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
         <Map {...{ location, setLocation, disabled }} />
-        <IconButton sx={{ position: "absolute", top: 10, right: 10, zIndex: 999, bgcolor: "#fff" }} onClick={fullMap} >
+        <IconButton sx={{ position: "absolute", top: 10, right: 10, zIndex: 999, bgcolor: "#fff" }} onClick={fullMap} disabled={disabled}>
             <FullscreenIcon />
         </IconButton>
     </Card>

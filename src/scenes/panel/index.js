@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Redirect, Route, Switch, useHistory } from "react-router-dom";
 import { Box } from "@mui/material"
-import { useEffect, } from 'react'
+import React, { useEffect, } from 'react'
 import { useSelector } from "react-redux";
 
 import Home from "./Home"
@@ -16,6 +16,7 @@ import AddLand from "./AddFile/FileTypes/Land"
 import AddCommercial from "./AddFile/FileTypes/Commercial"
 import AddHectare from "./AddFile/FileTypes/Hectare"
 
+import AddToHomePopUp from "../../components/AddToHomePopUp"
 
 
 const Panel = () => {
@@ -27,14 +28,42 @@ const Panel = () => {
         else checkUser()
     }, [])
 
+    const [addToHomeOpen, setAdd2HomeOpen] = React.useState(false)
+
 
     const checkUser = async () => {
         /* */
+        // Detects if device is on iOS 
+        const isIos = () => {
+            const userAgent = window.navigator.userAgent.toLowerCase();
+            return /iphone|ipad|ipod/.test(userAgent);
+        }
+        // Detects if device is in standalone mode
+        const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+        // checked before
+        const checkedAdd2Home = localStorage.getItem("checkedAdd2Home")
+
+        // Checks if should display install popup notification:
+        if (!checkedAdd2Home && isIos() && !isInStandaloneMode()) {
+            setAdd2HomeOpen(true)
+            localStorage.setItem("checkedAdd2Home", true)
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                console.log(position);
+            },
+            function (error) {
+                console.error("Error Code = " + error.code + " - " + error.message);
+            }
+        );
     }
 
 
     if (!user) return null;
     return <Box component="main" sx={{ height: '100%' }}>
+        {addToHomeOpen && <AddToHomePopUp close={() => setAdd2HomeOpen(false)} />}
         <Switch>
             <Route path="/new" exact component={AddFile} />
 

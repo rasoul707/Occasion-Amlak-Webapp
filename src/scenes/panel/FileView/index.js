@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Zoom, Grid, Typography, Avatar, Stack, Card, CardActionArea, CardContent } from "@mui/material"
+import { Box, Zoom, Grid, Typography, Avatar, Stack, Card, CardContent } from "@mui/material"
 import * as React from 'react';
 import AppBar from "../../../components/AppBar";
 import FilePlaceHolder from "../../../assets/images/file_placeholder.png"
@@ -119,7 +119,7 @@ const FilesView = () => {
     return (
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: 400, }}>
+                <Box sx={{ maxWidth: 400, width: '100%', }}>
                     <AppBar
                         center={false}
                         titleVariant="h6"
@@ -127,6 +127,7 @@ const FilesView = () => {
                         leadingProps={thumbUrl && { background: "#fff" }}
                         absoluteContainer
                         customComponent={<FocusPicture title={title} src={thumbUrl} />}
+                        paddingToolbar={true}
                     />
                     <PicturesList
                         title={title}
@@ -286,7 +287,7 @@ const PicturesList = ({ pictures, title, activePicture, setActivePicture }) => {
 
     if (pictures?.length <= 1) return null
 
-    return <Stack direction="row" spacing={2} sx={{ pb: 1, pt: 2, overflowX: "scroll", }}>
+    return <Stack direction="row" spacing={2} sx={{ pb: 1, pt: 2, ml: 2, mr: 2, overflowX: "scroll", }}>
         {pictures?.map(({ thumbnail }, index) => {
             return <PictureItem
                 title={title}
@@ -301,26 +302,22 @@ const PicturesList = ({ pictures, title, activePicture, setActivePicture }) => {
 
 
 const PictureItem = ({ isActive, title, src, setActive }) => {
-    return <Card sx={{
-        borderRadius: 2,
-        border: "0.5px solid transparent",
-        borderColor: isActive ? "#9c27b0" : "transparent"
-    }}>
-        <CardActionArea onClick={setActive} >
-            <CardContent sx={{ p: "0px !important" }}>
-                <Avatar
-                    variant="square"
-                    sx={{ width: 65, height: 65, }}
-                    alt={title}
-                    src={src}
-                >
-                    <img
-                        src={FilePlaceHolderSquare}
-                        style={{ width: "100%", height: "100%", objectFit: "contain", color: "transparent", }}
-                        alt={title}
-                    />
-                </Avatar>
-            </CardContent>
-        </CardActionArea>
-    </Card>
+    return <Avatar
+        variant="square"
+        sx={{
+            width: 65, height: 65,
+            borderRadius: 2,
+            border: "0.5px solid transparent",
+            borderColor: isActive ? "#9c27b0" : "transparent"
+        }}
+        alt={title}
+        src={src}
+        onClick={setActive}
+    >
+        <img
+            src={FilePlaceHolderSquare}
+            style={{ width: "100%", height: "100%", objectFit: "contain", color: "transparent", }}
+            alt={title}
+        />
+    </Avatar>
 }

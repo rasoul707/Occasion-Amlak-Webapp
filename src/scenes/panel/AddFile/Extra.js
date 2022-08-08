@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Box, Grid, Zoom } from "@mui/material"
-import { useLocation, Route, Switch, useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import * as React from 'react';
 import AppBar from "../../../components/AppBar"
 import TextField from "../../../components/TextField"
@@ -58,6 +58,8 @@ const Page = () => {
 
 
     // ****
+
+    const [fullmap, setFullmap] = React.useState(false)
 
     const handleUpload = async () => {
         return new Promise(async (resolve, reject) => {
@@ -155,22 +157,17 @@ const Page = () => {
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
-                <Switch>
-                    <Route
-                        path="/new/land/extra/fullmap"
-                        exact
-                        render={() => {
-                            return <FullMap
-                                location={location}
-                                setLocation={setLocation}
-                                disabled={disabled}
-                            />
-                        }}
+
+                {fullmap &&
+                    <FullMap
+                        location={location}
+                        setLocation={setLocation}
+                        disabled={disabled}
+                        close={() => setFullmap(false)}
                     />
-                </Switch>
+                }
 
-
-                <Box sx={{ maxWidth: 400, width: 400, }}>
+                <Box sx={{ maxWidth: 400, width: '100%', display: fullmap && "none" }}>
                     <AppBar
                         title={"ثبت " + persianFileType}
                     />
@@ -199,7 +196,6 @@ const Page = () => {
                                         inputComponent: PriceFormatCustom,
                                     }}
                                 />
-
                             </Grid>
                             <Grid item>
                                 <TextField
@@ -263,6 +259,7 @@ const Page = () => {
                                     location={location}
                                     setLocation={setLocation}
                                     disabled={disabled}
+                                    fullMap={() => setFullmap(true)}
                                 />
                             </Grid>
                             <Grid item>
@@ -279,6 +276,12 @@ const Page = () => {
                         </Grid>
                     </Box>
                 </Box>
+
+
+
+
+
+
             </Box>
 
 

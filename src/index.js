@@ -58,7 +58,7 @@ const theme = createTheme({
           ),
           ...(
             ownerState.size === 'large' && {
-              height: "56px",
+              height: "50px",
               fontSize: "1.2rem",
               fontWeight: 500,
             }
@@ -81,7 +81,7 @@ const theme = createTheme({
           },
           ...(
             !ownerState.multiline && {
-              height: "56px",
+              height: "50px",
             }
           ),
         }),
@@ -126,7 +126,7 @@ const theme = createTheme({
         root: ({ ownerState }) => ({
           background: "linear-gradient(215.33deg, #FFE600 0, #FFC700 70.74%) !important",
           color: "#111111",
-          height: "56px",
+          height: "50px",
           borderRadius: "30px",
           boxShadow: "0px 0px 20px - 10px rgba(0, 0, 0, 0.25)",
           ...(
@@ -177,6 +177,6 @@ ReactDOM.render(
 
 
 
-serviceWorker.unregister();
+serviceWorker.register();
 
 reportWebVitals();

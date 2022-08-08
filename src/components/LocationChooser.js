@@ -3,17 +3,15 @@ import { Card, IconButton, Box, Button } from "@mui/material"
 import { MapContainer, TileLayer, useMapEvents } from 'react-leaflet'
 import * as React from 'react';
 import MapMarker from "../assets/images/map_marker.png"
-import { useHistory } from "react-router-dom";
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 import L from "leaflet"
 
 
 
-const LocationChooser = ({ location, setLocation, disabled }) => {
-    const history = useHistory()
+const LocationChooser = ({ location, setLocation, disabled, fullMap }) => {
     return <Card sx={{ height: 200, display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
         <Map {...{ location, setLocation, disabled }} />
-        <IconButton sx={{ position: "absolute", top: 10, right: 10, zIndex: 999, bgcolor: "#fff" }} onClick={() => history.push("/new/land/extra/fullmap")} >
+        <IconButton sx={{ position: "absolute", top: 10, right: 10, zIndex: 999, bgcolor: "#fff" }} onClick={fullMap} >
             <FullscreenIcon />
         </IconButton>
     </Card>
@@ -53,8 +51,6 @@ export const FullMap = (props) => {
 
     const [locate, setLocate] = React.useState(false)
     const [tempLocation, setTempLocation] = React.useState(props.location)
-    const history = useHistory()
-
 
 
     return <div style={{
@@ -73,7 +69,7 @@ export const FullMap = (props) => {
             locate={locate}
         />
         <Box sx={{ display: 'flex', justifyContent: 'center', bottom: 0, position: 'absolute', zIndex: 999 }}>
-            <Box sx={{ maxWidth: 400, width: 400, m: 3 }}>
+            <Box sx={{ maxWidth: 400, width: '100%', m: 3 }}>
                 <Button
                     variant="contained"
                     size="large"
@@ -89,8 +85,17 @@ export const FullMap = (props) => {
                     children="تایید"
                     onClick={() => {
                         props.setLocation(tempLocation)
-                        history.goBack()
+                        props.close()
                     }}
+                    fullWidth
+                />
+                <Button
+                    variant="contained"
+                    size="large"
+                    sx={{ mt: 1.5 }}
+                    color="inherit"
+                    children="برگشت"
+                    onClick={() => props.close()}
                     fullWidth
                 />
             </Box>
@@ -103,7 +108,9 @@ export const FullMap = (props) => {
 
 function LocationEvent({ location, setLocation, disabled, locate }) {
     React.useEffect(() => {
-        if (locate) map.locate()
+        if (locate) {
+            map.locate()
+        }
     }, [locate])
 
 

@@ -96,82 +96,80 @@ const Page = () => {
 
     return (
         <Zoom in={true} mountOnEnter unmountOnExit>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: 400, }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+                <Box sx={{ maxWidth: 400, width: 400, m: 3, }}>
                     <AppBar
                         title={"ثبت " + persianFileType}
                     />
-                    <Box sx={{ m: 3, }}>
-                        <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
-                            <Grid item>
-                                <SelectOption
-                                    items={commercialTypesList}
-                                    value={type}
-                                    onChange={(v) => setType(v)}
-                                    disabled={disabled}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="متراژ زمین"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={area}
-                                    onChange={(e) => setArea(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: JustPersianFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <SelectOption
-                                    items={documentsTypeList}
-                                    value={documentType}
-                                    onChange={(v) => setDocumentType(v)}
-                                    disabled={disabled}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="طبقه ملک"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={floor}
-                                    onChange={(e) => setFloor(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: JustPersianFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="متراژ بر تجاری"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={commercialArea}
-                                    onChange={(e) => setCommercialArea(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: JustPersianFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item>
-                                <LoadingButton
-                                    variant="contained"
-                                    size="large"
-                                    children="ثبت و ادامه"
-                                    onClick={next}
-                                    disabled={disabled}
-                                    loading={loading}
-                                    fullWidth
-                                />
-                            </Grid>
+                    <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                        <Grid item>
+                            <SelectOption
+                                items={commercialTypesList}
+                                value={type}
+                                onChange={(v) => setType(v)}
+                                disabled={disabled}
+                            />
                         </Grid>
-                    </Box>
+                        <Grid item>
+                            <TextField
+                                label="متراژ زمین"
+                                autoComplete="true"
+                                type="text"
+                                value={area}
+                                onChange={(e) => setArea(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: JustPersianFormatCustom,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <SelectOption
+                                items={documentsTypeList}
+                                value={documentType}
+                                onChange={(v) => setDocumentType(v)}
+                                disabled={disabled}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="طبقه ملک"
+                                autoComplete="true"
+                                type="text"
+                                value={floor}
+                                onChange={(e) => setFloor(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: JustPersianFormatCustom,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="متراژ بر تجاری"
+                                autoComplete="true"
+                                type="text"
+                                value={commercialArea}
+                                onChange={(e) => setCommercialArea(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: JustPersianFormatCustom,
+                                }}
+                            />
+                        </Grid>
+
+                        <Grid item>
+                            <LoadingButton
+                                variant="contained"
+                                size="large"
+                                children="ثبت و ادامه"
+                                onClick={next}
+                                disabled={disabled}
+                                loading={loading}
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
                 </Box>
             </Box>
         </Zoom>

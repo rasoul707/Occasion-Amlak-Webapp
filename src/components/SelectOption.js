@@ -18,21 +18,26 @@ const SelectOption = ({ items, disabled, value, onChange, multiple }) => {
             }
         }
     }
-    return <Stack direction="row" spacing={1} sx={{ overflowX: "scroll", pb: 1 }}>
-
-        {items.map(v => {
-            const active = multiple ? value.includes(v) : v === value
-            return <Tooltip title={v}>
-                <Chip
-                    label={v}
-                    color={active ? "primary" : "default"}
-                    onClick={() => clickHandler(v)}
-                    clickable
-                    disabled={disabled}
-                />
-            </Tooltip>
-        })}
-    </Stack>
+    return <div style={{
+        width: "calc(100vw - 48px)",
+        overflowX: "auto",
+        maxWidth: "376px"
+    }}>
+        <Stack direction="row" spacing={1} sx={{ pb: 1 }}>
+            {items.map(v => {
+                const active = multiple ? value.includes(v) : v === value
+                return <Tooltip title={v}>
+                    <Chip
+                        label={v}
+                        color={active ? "primary" : "default"}
+                        onClick={() => clickHandler(v)}
+                        clickable
+                        disabled={disabled}
+                    />
+                </Tooltip>
+            })}
+        </Stack>
+    </div>
 }
 
 export default SelectOption

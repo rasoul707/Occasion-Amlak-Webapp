@@ -34,7 +34,7 @@ const Concept = ({ imgSrc, title, subtitle }) => {
     return (
         <Fade in={true} mountOnEnter unmountOnExit >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: 400, }}>
+                <Box sx={{ maxWidth: 400, width: '100%', }}>
                     <Box sx={{ p: 3, }}>
                         <Grid container direction="row" spacing={5} alignItems="center" justifyContent="center" >
                             <Grid item xs={12} container justifyContent="center">

@@ -181,107 +181,105 @@ const Page = () => {
 
     return (
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: 400, }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
+                <Box sx={{ maxWidth: 400, width: '100%', m: 3, }}>
                     <AppBar
                         title={"جستجوی فایل"}
                         center={false}
                         titleVariant="h6"
                         autoLeading={true}
                     />
-                    <Box sx={{ p: 3, }}>
-                        <Grid container direction="stretch" spacing={3} alignItems="center" justifyContent="center">
-                            <Grid item xs={12}>
-                                <InputLabel
-                                    focused
-                                    disableAnimation={true}
-                                    sx={{ fontSize: ".75rem" }}
-                                >
-                                    محدوده قیمت (هر متر مربع)
-                                </InputLabel>
-                                <Slider
-                                    step={2500000}
-                                    min={minPrice}
-                                    max={maxPrice}
-                                    valueLabelDisplay="auto"
-                                    value={price}
-                                    onChange={(e, val) => setPrice(val)}
-                                    disabled={disabled}
-                                />
-                                <InputLabel
-                                    focused
-                                    disableAnimation={true}
-                                    sx={{ fontSize: ".75rem" }}
-                                >
-                                    <div style={{ display: "flex", justifyContent: "space-between" }}>
-                                        <span>
-                                            <NumberFormat value={minPrice} displayType={'text'} thousandSeparator={true} />
-                                        </span>
-                                        <span>
-                                            <NumberFormat value={maxPrice} displayType={'text'} thousandSeparator={true} />
-                                        </span>
-                                    </div>
-                                </InputLabel>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <SelectOption
-                                    items={fileTypesList}
-                                    value={type}
-                                    onChange={(v) => setType(v)}
-                                    disabled={disabled}
-                                    multiple
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="منطقه"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={district}
-                                    onChange={(e) => setDistrict(e.target.value)}
-                                    disabled={disabled}
-                                    inputProps={{ style: { direction: 'rtl', } }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="متراژ زمین"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={area}
-                                    onChange={(e) => setArea(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: JustPersianFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    label="متراژ بنا"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={buildingArea}
-                                    onChange={(e) => setBuildingArea(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: JustPersianFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <LoadingButton
-                                    variant="contained"
-                                    size="large"
-                                    children="جستجو"
-                                    onClick={submit}
-                                    disabled={disabled}
-                                    loading={loading}
-                                    fullWidth
-                                />
-                            </Grid>
+                    <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" >
+                        <Grid item>
+                            <InputLabel
+                                focused
+                                disableAnimation={true}
+                                sx={{ fontSize: ".75rem" }}
+                            >
+                                محدوده قیمت (هر متر مربع)
+                            </InputLabel>
+                            <Slider
+                                step={2500000}
+                                min={minPrice}
+                                max={maxPrice}
+                                valueLabelDisplay="auto"
+                                value={price}
+                                onChange={(e, val) => setPrice(val)}
+                                disabled={disabled}
+                            />
+                            <InputLabel
+                                focused
+                                disableAnimation={true}
+                                sx={{ fontSize: ".75rem" }}
+                            >
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <span>
+                                        <NumberFormat value={minPrice} displayType={'text'} thousandSeparator={true} />
+                                    </span>
+                                    <span>
+                                        <NumberFormat value={maxPrice} displayType={'text'} thousandSeparator={true} />
+                                    </span>
+                                </div>
+                            </InputLabel>
                         </Grid>
-                    </Box>
+                        <Grid item>
+                            <SelectOption
+                                items={fileTypesList}
+                                value={type}
+                                onChange={(v) => setType(v)}
+                                disabled={disabled}
+                                multiple
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="منطقه"
+                                autoComplete="true"
+                                type="text"
+                                value={district}
+                                onChange={(e) => setDistrict(e.target.value)}
+                                disabled={disabled}
+                                inputProps={{ style: { direction: 'rtl', } }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="متراژ زمین"
+                                autoComplete="true"
+                                type="text"
+                                value={area}
+                                onChange={(e) => setArea(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: JustPersianFormatCustom,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="متراژ بنا"
+                                autoComplete="true"
+                                type="text"
+                                value={buildingArea}
+                                onChange={(e) => setBuildingArea(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: JustPersianFormatCustom,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <LoadingButton
+                                variant="contained"
+                                size="large"
+                                children="جستجو"
+                                onClick={submit}
+                                disabled={disabled}
+                                loading={loading}
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
                 </Box>
             </Box>
         </Zoom>

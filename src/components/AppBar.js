@@ -12,7 +12,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import { useHistory } from 'react-router-dom';
 import { Grid } from '@mui/material';
 
-const ResponsiveAppBar = ({ title, center = true, titleVariant = "h5", autoLeading = false, leading = null, bottom, leadingProps, absoluteContainer, customComponent }) => {
+const ResponsiveAppBar = ({ title, center = true, titleVariant = "h5", autoLeading = false, leading = null, bottom, leadingProps, absoluteContainer, customComponent, paddingToolbar }) => {
 
     const history = useHistory()
 
@@ -22,14 +22,15 @@ const ResponsiveAppBar = ({ title, center = true, titleVariant = "h5", autoLeadi
 
             {customComponent}
 
-            <Container maxWidth="xl" sx={{ position: absoluteContainer && "absolute" }}>
+            <Container maxWidth="xl" sx={{ position: absoluteContainer && "absolute", p: "0 !important", }}>
 
 
                 <Toolbar
                     sx={{
                         justifyContent: center ? "center" : (title ? "space-between" : "flex-end"),
                         mt: 2, mb: 2,
-                        p: "0 !important",
+
+                        ...(paddingToolbar ? { pr: 3, pl: 3 } : { p: "0 !important", })
                     }}
 
                 >
@@ -68,7 +69,7 @@ const ResponsiveAppBar = ({ title, center = true, titleVariant = "h5", autoLeadi
 
 
             </Container>
-            <Container maxWidth="xl">
+            <Container maxWidth="xl" sx={{ p: "0 !important", }}>
                 {bottom}
             </Container>
 

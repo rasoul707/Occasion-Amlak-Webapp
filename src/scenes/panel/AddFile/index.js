@@ -15,7 +15,7 @@ const Page = () => {
     return (
         <Zoom in={true} >
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: 400, m: 3, }}>
+                <Box sx={{ maxWidth: 400, width: '100%', m: 3, }}>
                     <Grid container direction="row" spacing={2} alignItems="center" justifyContent="center">
                         <Item label="ویلا" url="villa" />
                         <Item label="آپارتمان" url="apartment" />

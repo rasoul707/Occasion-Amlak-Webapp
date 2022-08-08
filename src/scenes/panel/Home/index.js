@@ -59,7 +59,7 @@ const Page = () => {
                                 <Grid item xs={6}>
                                     <Card>
                                         <CardContent>
-                                            <Typography sx={{ fontSize: 13, textAlign: "center" }} color="#111111" >
+                                            <Typography sx={{ fontSize: 13, textAlign: "center" }} noWrap color="#111111" >
                                                 در انتظار تایید
                                             </Typography>
                                             <Typography sx={{ textAlign: "center", fontWeight: 900 }} variant="h6" color="#111111">
@@ -71,7 +71,7 @@ const Page = () => {
                                 <Grid item xs={6}>
                                     <Card>
                                         <CardContent>
-                                            <Typography sx={{ fontSize: 13, textAlign: "center" }} color="#111111" >
+                                            <Typography sx={{ fontSize: 13, textAlign: "center" }} noWrap color="#111111" >
                                                 فایل های تایید شده
                                             </Typography>
                                             <Typography sx={{ textAlign: "center", fontWeight: 900 }} variant="h6" color="#111111">

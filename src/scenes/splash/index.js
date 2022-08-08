@@ -17,11 +17,11 @@ const Splash = () => {
 
     return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: "linear-gradient(215.33deg, #FFE600 0%, #FFDA00 29.51%, #FFC700 70.74%)" }}>
-            <Box sx={{ maxWidth: 400, width: 400, }}>
+            <Box sx={{ maxWidth: 400, width: '100%', }}>
                 <Box sx={{ p: 3, }}>
                     <Grid container direction="column" spacing={2} alignItems="center" justifyContent="center" >
                         <Grid item container justifyContent="center">
-                            <img src={Logo} alt="Iran Occasion" style={{ height: 150, }} />
+                            <img src={Logo} alt="Iran Occasion" style={{ width: "100%", maxWidth: 250 }} />
                         </Grid>
                         <Grid item>
                             <Typography align="center" variant="h4" sx={{ fontWeight: 700, color: "#111111" }}>املاک اکازیون</Typography>
@@ -40,5 +40,6 @@ const Splash = () => {
         </Box>
     )
 }
+
 
 export default Splash

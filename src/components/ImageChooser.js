@@ -74,7 +74,7 @@ const ImageChooser = ({ pictures, setPictures, thumb, setThumb, uploaded, upload
         >
 
             <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: 400, }}>
+                <Box sx={{ maxWidth: 400, width: '100%', }}>
                     <Box sx={{ m: 3, }}>
                         <Typography align="center" noWrap variant="h5" sx={{ fontWeight: 700, color: "#111111" }}>
                             تصاویر {pictures.length > 0 && "(" + pictures.length + ")"}
@@ -126,7 +126,7 @@ const ImageChooser = ({ pictures, setPictures, thumb, setThumb, uploaded, upload
                                                 srcSet={`${path}`}
                                                 alt={file.name}
                                                 loading="lazy"
-                                                sx={{ objectFit: "fill", cursor: "pointer", aspectRatio: 1 }}
+                                                style={{ objectFit: "fill", cursor: "pointer", aspectRatio: 1 }}
                                             />
 
                                             {disabled ? null :

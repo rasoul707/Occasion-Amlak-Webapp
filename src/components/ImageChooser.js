@@ -126,7 +126,7 @@ const ImageChooser = ({ pictures, setPictures, thumb, setThumb, uploaded, upload
                                                 srcSet={`${path}`}
                                                 alt={file.name}
                                                 loading="lazy"
-                                                style={{ objectFit: "fill", cursor: "pointer", aspectRatio: 1 }}
+                                                style={{ objectFit: "fill", cursor: "pointer", aspectRatio: "1" }}
                                             />
 
                                             {disabled ? null :

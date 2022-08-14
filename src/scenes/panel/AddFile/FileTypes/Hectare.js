@@ -10,16 +10,17 @@ import { useSnackbar } from 'notistack';
 import { LoadingButton } from '@mui/lab'
 import validex from 'validex'
 import { useDispatch, } from "react-redux";
+import Checkbox from "../../../../components/Checkbox"
+
 
 
 
 const Page = () => {
 
-
-
     const dispatch = useDispatch()
     const appLoader = (payload) => dispatch({ type: 'BACKDROP', payload: { backdrop: payload } })
     React.useState(() => { appLoader(false) }, [])
+
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar()
     const locationH = useLocation()
@@ -35,6 +36,7 @@ const Page = () => {
     const [tissueStatus, setTissueStatus] = React.useState(null)
     const [area, setArea] = React.useState(null)
     const [documentType, setDocumentType] = React.useState(null)
+    const [withOldBuilding, setWithOldBuilding] = React.useState(false)
 
 
 
@@ -46,6 +48,7 @@ const Page = () => {
             tissueStatus,
             area: parseFloat(area),
             documentType,
+            withOldBuilding
         }
         const schema = {
             usageStatus: {
@@ -81,9 +84,21 @@ const Page = () => {
         setDisabled(true)
         setLoading(true)
 
-
-        history.replace(`/new/${fileType}/extra`, { [fileType]: data })
+        localStorage.setItem('newFileDataStates', JSON.stringify(data))
+        history.push(`/new/${fileType}/extra`, { [fileType]: data })
     }
+
+    React.useEffect(() => {
+        if (localStorage.getItem('newFileDataStates') && history.action === "POP") {
+            const data = JSON.parse(localStorage.getItem('newFileDataStates'))
+            if (data.usageStatus) setUsageStatus(data.usageStatus)
+            if (data.tissueStatus) setTissueStatus(data.tissueStatus)
+            if (data.area) setArea(data.area)
+            if (data.documentType) setDocumentType(data.documentType)
+            if (data.withOldBuilding) setWithOldBuilding(data.withOldBuilding)
+        }
+        localStorage.removeItem('newFileDataStates')
+    }, [])
 
 
     const persianFileType = typeFileConvert2Persian(fileType)
@@ -134,7 +149,14 @@ const Page = () => {
                                 disabled={disabled}
                             />
                         </Grid>
-
+                        <Grid item >
+                            <Checkbox
+                                label="دارای بنای قدیمی"
+                                checked={withOldBuilding}
+                                onChange={(e) => setWithOldBuilding(e.target.checked)}
+                                disabled={disabled}
+                            />
+                        </Grid>
 
                         <Grid item>
                             <LoadingButton
@@ -148,8 +170,8 @@ const Page = () => {
                             />
                         </Grid>
                     </Grid>
-                </Box>
 
+                </Box>
             </Box>
         </Zoom>
     )

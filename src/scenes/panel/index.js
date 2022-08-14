@@ -19,6 +19,7 @@ import AddHectare from "./AddFile/FileTypes/Hectare"
 import AddToHomePopUp from "../../components/AddToHomePopUp"
 
 
+
 const Panel = () => {
 
     const history = useHistory()
@@ -49,21 +50,13 @@ const Panel = () => {
             setAdd2HomeOpen(true)
             localStorage.setItem("checkedAdd2Home", true)
         }
-
-        navigator.geolocation.getCurrentPosition(
-            function (position) {
-                console.log(position);
-            },
-            function (error) {
-                console.error("Error Code = " + error.code + " - " + error.message);
-            }
-        );
     }
 
 
     if (!user) return null;
     return <Box component="main" sx={{ height: '100%' }}>
         {addToHomeOpen && <AddToHomePopUp close={() => setAdd2HomeOpen(false)} />}
+
         <Switch>
             <Route path="/new" exact component={AddFile} />
 

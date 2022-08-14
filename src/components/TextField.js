@@ -44,6 +44,29 @@ export const JustPersianFormatCustom = React.forwardRef(function NumberFormatCus
 });
 
 
+export const PersianPhoneNumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
+    const { onChange, ...other } = props;
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={ref}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value,
+                    },
+                });
+            }}
+            customNumerals={persianNumeral}
+            format="0### ### ####"
+            allowEmptyFormatting
+            mask="_"
+        />
+    );
+});
+
+
 
 
 
@@ -54,6 +77,7 @@ const TextField = (props) => {
         inputProps={{ style: { direction: 'ltr', } }}
         variant="outlined"
         fullWidth
+
 
         {...props}
     />

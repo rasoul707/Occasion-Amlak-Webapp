@@ -89,8 +89,7 @@ export const villaEquipmentsList = [
     "جنگلی",
     "شهرکی",
     "شاه نشین",
-    "فول",
-    "فرنیش",
+    "فول فرنیش",
 ];
 
 export const villaTypesList = ["فلت", "دوبلکس", "تریبلکس", "طبقات جداگانه"]

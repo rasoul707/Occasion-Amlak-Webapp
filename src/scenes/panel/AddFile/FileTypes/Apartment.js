@@ -100,8 +100,24 @@ const Page = () => {
         setLoading(true)
 
 
-        history.replace(`/new/${fileType}/extra`, { [fileType]: data })
+        localStorage.setItem('newFileDataStates', JSON.stringify(data))
+        history.push(`/new/${fileType}/extra`, { [fileType]: data })
     }
+
+    React.useEffect(() => {
+        if (localStorage.getItem('newFileDataStates') && history.action === "POP") {
+            const data = JSON.parse(localStorage.getItem('newFileDataStates'))
+            if (data.floorsCount) setFloorsCount(data.floorsCount)
+            if (data.unitsCount) setUnitsCount(data.unitsCount)
+            if (data.floor) setFloor(data.floor)
+            if (data.area) setArea(data.area)
+            if (data.documentType) setDocumentType(data.documentType)
+            if (data.roomsCount) setRoomsCount(data.roomsCount)
+            if (data.mastersCount) setMastersCount(data.mastersCount)
+            if (data.equipments) setEquipments(data.equipments)
+        }
+        localStorage.removeItem('newFileDataStates')
+    }, [])
 
 
     const persianFileType = typeFileConvert2Persian(fileType)

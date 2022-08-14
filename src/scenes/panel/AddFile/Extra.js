@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Grid, Zoom } from "@mui/material"
+import { Box, Grid, Zoom, } from "@mui/material"
 import { useLocation, useHistory } from "react-router-dom";
 import * as React from 'react';
 import AppBar from "../../../components/AppBar"
-import TextField from "../../../components/TextField"
+import TextField, { PersianPhoneNumberFormatCustom, PriceFormatCustom } from "../../../components/TextField"
+import Checkbox from "../../../components/Checkbox"
 
 import LocationChooser from "../../../components/LocationChooser"
 import ImageChooser from "../../../components/ImageChooser"
@@ -18,8 +19,8 @@ import { Success as SuccessAdd, Error as ErrorAdd } from "./Result"
 import { useDispatch, } from "react-redux";
 
 import { FullMap } from "../../../components/LocationChooser"
-import { PriceFormatCustom } from "../../../components/TextField"
 import validex from 'validex'
+
 
 
 const Page = () => {
@@ -57,6 +58,9 @@ const Page = () => {
     const [location, setLocation] = React.useState([36.654954, 51.420534, 15])
 
 
+    const [canBarter, setCanBarter] = React.useState(false)
+    const [ownerName, setOwnerName] = React.useState(null)
+    const [ownerPhone, setOwnerPhone] = React.useState(null)
     // ****
 
     const [fullmap, setFullmap] = React.useState(false)
@@ -99,6 +103,10 @@ const Page = () => {
             description,
             pictures: [],
             thumb: null,
+
+            canBarter,
+            ownerName,
+            ownerPhone: ownerPhone && "+98" + ownerPhone,
             [fileType]: mainData
         }
 
@@ -131,12 +139,12 @@ const Page = () => {
             return enqueueSnackbar(Object.values(errors)[0], { variant: "error" })
         }
 
+        if (!pictures.length) {
+            return enqueueSnackbar("باید حداقل یک عکس اضافه کنید", { variant: "error" })
+        }
 
         setLoading(true)
         setDisabled(true)
-
-
-
 
         try {
 
@@ -219,6 +227,14 @@ const Page = () => {
                                     }}
                                 />
                             </Grid>
+                            <Grid item sx={{ pt: "0 !important" }}>
+                                <Checkbox
+                                    label="قابل تهاتر"
+                                    checked={canBarter}
+                                    onChange={(e) => setCanBarter(e.target.checked)}
+                                    disabled={disabled}
+                                />
+                            </Grid>
                             <Grid item>
                                 <TextField
                                     label="شهر"
@@ -265,6 +281,29 @@ const Page = () => {
                             </Grid>
                             <Grid item>
                                 <TextField
+                                    label="نام مالک"
+                                    autoComplete="true"
+                                    type="text"
+                                    value={ownerName}
+                                    onChange={(e) => setOwnerName(e.target.value)}
+                                    disabled={disabled}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
+                                    label="شماره تماس مالک"
+                                    autoComplete="true"
+                                    type="text"
+                                    value={ownerPhone}
+                                    onChange={(e) => setOwnerPhone(e.target.value)}
+                                    disabled={disabled}
+                                    InputProps={{
+                                        inputComponent: PersianPhoneNumberFormatCustom,
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField
                                     label="توضیحات"
                                     autoComplete="true"
                                     type="text"
@@ -298,16 +337,7 @@ const Page = () => {
                         </Grid>
                     </Box>
                 </Box>
-
-
-
-
-
-
             </Box>
-
-
-
         </Zoom>
     )
 }

@@ -8,6 +8,9 @@ import * as API from "../../../api";
 
 import SelectOption from "../../../components/SelectOption";
 import TextField, { JustPersianFormatCustom } from "../../../components/TextField";
+import Checkbox from "../../../components/Checkbox"
+
+
 import LoadingButton from "@mui/lab/LoadingButton";
 
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
@@ -63,7 +66,8 @@ const Page = () => {
 
     const [sorting, setSorting] = React.useState('-time')
     // ****
-    const [price, setPrice] = React.useState([25000000, 75000000]);
+    const [price, setPrice] = React.useState([25000000, 75000000])
+    const [canBarter, setCanBarter] = React.useState(false)
     const [type, setType] = React.useState([])
     const [district, setDistrict] = React.useState(null)
     const [area, setArea] = React.useState(null)
@@ -76,11 +80,14 @@ const Page = () => {
 
 
 
+
+
     const submit = async () => {
         closeSnackbar()
 
         const _type = type.map(typeConvert2Slug)
         let queryParam = `price=${price.join(",")}`
+        if (canBarter) queryParam += `&canBarter=1`
         if (_type.length) queryParam += `&type=${_type.join(",")}`
         if (district) queryParam += `&district=${district}`
         if (area) queryParam += `&area=${area}`
@@ -221,6 +228,14 @@ const Page = () => {
                                     </span>
                                 </div>
                             </InputLabel>
+                        </Grid>
+                        <Grid item sx={{ pt: "0 !important" }}>
+                            <Checkbox
+                                label="قابل تهاتر"
+                                checked={canBarter}
+                                onChange={(e) => setCanBarter(e.target.checked)}
+                                disabled={disabled}
+                            />
                         </Grid>
                         <Grid item>
                             <SelectOption

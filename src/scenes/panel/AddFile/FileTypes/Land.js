@@ -105,10 +105,10 @@ const Page = () => {
         <Zoom in={true} mountOnEnter unmountOnExit>
             <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
                 <Box sx={{ maxWidth: 400, width: '100%', m: 3, }}>
-                    <AppBar
-                        title={"ثبت " + persianFileType}
-                    />
-                    <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                    <Grid container direction="column" gap={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                        <AppBar
+                            title={"ثبت " + persianFileType}
+                        />
                         <Grid item>
                             <SelectOption
                                 items={usageStatusLandHectareList}
@@ -154,8 +154,8 @@ const Page = () => {
                                 disabled={disabled}
                             />
                         </Grid>
-
-                        <Grid item>
+                        <Grid item xs={12} />
+                        <Grid item sx={{ pb: 2 }}>
                             <LoadingButton
                                 variant="contained"
                                 size="large"

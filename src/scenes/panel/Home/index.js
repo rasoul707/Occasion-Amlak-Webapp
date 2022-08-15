@@ -44,7 +44,7 @@ const Page = () => {
             <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
                 <Box sx={{ maxWidth: 400, width: '100%', m: 3 }}>
 
-                    <Grid container spacing={.5} direction="column" alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                    <Grid container gap={.5} direction="column" alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
 
                         <Grid item container justifyContent="center" >
                             <UserAvatar email={user.email} />
@@ -106,12 +106,11 @@ const Page = () => {
                             />
                         </Grid>
                         <Grid item xs={12} />
-                        <Grid item>
+                        <Grid item sx={{ pb: 1.5, mt: 3 }}>
                             <Button
                                 variant="contained"
                                 size="large"
                                 color="inherit"
-                                sx={{ mt: 2 }}
                                 children="خروج از حساب کاربری"
                                 onClick={() => history.push("/logout")}
                                 fullWidth

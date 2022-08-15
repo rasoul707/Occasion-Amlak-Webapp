@@ -8,7 +8,7 @@ import FilePlaceHolderSquare from "../../../assets/images/file_placeholder_squar
 
 
 import * as API from "../../../api"
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useSnackbar } from "notistack";
 import { FilePrice, FileDetail } from "../FileItem";
 import BedIcon from '@mui/icons-material/Bed';
@@ -18,11 +18,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useDispatch, } from "react-redux";
 
 
-const FilesView = () => {
+const FileView = () => {
 
 
 
     const params = useParams()
+    const location = useLocation()
     const { enqueueSnackbar } = useSnackbar()
 
 
@@ -117,34 +118,42 @@ const FilesView = () => {
     }
 
     return (
+
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
-                <Box sx={{ maxWidth: 400, width: '100%', }}>
-                    <AppBar
-                        center={false}
-                        titleVariant="h6"
-                        autoLeading={true}
-                        leadingProps={thumbUrl && { background: "#fff" }}
-                        absoluteContainer
-                        customComponent={<FocusPicture title={title} src={thumbUrl} />}
-                        paddingToolbar={true}
-                    />
-                    <PicturesList
-                        title={title}
-                        pictures={picturesUrl}
-                        activePicture={activePicture}
-                        setActivePicture={setActivePicture}
-                    />
-                    <Box sx={{ pt: 1, pb: 0 }}>
-                        <ContentBox
-                            detail={detail}
-                            price={file?.price}
-                            title={title}
-                            documentType={documentType}
-                            equipments={equipments}
-                            author={file?.author}
+                <Box sx={{ maxWidth: 400, width: '100%', height: '100%' }}>
+                    <Grid container gap={0} direction="column" alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                        <AppBar
+                            center={false}
+                            titleVariant="h6"
+                            autoLeading={true}
+                            leadingProps={thumbUrl && { background: "#fff" }}
+                            absoluteContainer
+                            customComponent={<FocusPicture title={title} src={thumbUrl} />}
+                            paddingToolbar={true}
                         />
-                    </Box>
+                        <Grid item>
+                            <PicturesList
+                                title={title}
+                                pictures={picturesUrl}
+                                activePicture={activePicture}
+                                setActivePicture={setActivePicture}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <ContentBox
+                                detail={detail}
+                                price={file?.price}
+                                totalPrice={file?.totalPrice}
+                                byTotal={location.search === "?total"}
+                                title={title}
+                                documentType={documentType}
+                                equipments={equipments}
+                                author={file?.author}
+                            />
+                        </Grid>
+                    </Grid>
+
                 </Box>
             </Box>
         </Zoom>
@@ -152,37 +161,51 @@ const FilesView = () => {
 }
 
 
-export default FilesView
+export default FileView
 
 
 
 
-const ContentBox = ({ detail, price, title, documentType, equipments, author }) => {
+const ContentBox = ({ detail, price, totalPrice, byTotal, title, documentType, equipments, author, topBar }) => {
     return (
-        <Card sx={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, }}>
-            <CardContent >
-                <Grid container direction="row" spacing={1} alignItems="stretch" justifyContent="center" sx={{ mb: 2 }}>
-                    <Grid item xs={6} >
-                        <FileTitle title={title} />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Grid container direction="column" spacing={1} alignItems="stretch" justifyContent="center">
-                            <Grid item xs={6} >
-                                <FileDetail
-                                    detail={detail}
-                                    textAlign="start"
-                                    textVariant={"subtitle2"}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <FilePrice price={price} />
+        <Card sx={{ borderBottomRightRadius: 0, borderBottomLeftRadius: 0, height: "100%" }}>
+            <CardContent sx={{ height: '100%' }}>
+                <Grid item container gap={.5} direction="column" alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                    <Grid container direction="row" spacing={1} alignItems="stretch" justifyContent="center" sx={{ mb: 2, }}>
+                        <Grid item xs={6} >
+                            <FileTitle title={title} />
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Grid container direction="column" spacing={1} alignItems="stretch" justifyContent="center">
+                                <Grid item xs={6} >
+                                    <FileDetail
+                                        detail={detail}
+                                        textAlign="start"
+                                        textVariant={"subtitle2"}
+                                    />
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <FilePrice
+                                        price={price}
+                                        totalPrice={totalPrice}
+                                        byTotal={byTotal}
+                                    />
+                                </Grid>
                             </Grid>
                         </Grid>
                     </Grid>
+                    <Grid item>
+                        <FileDocumentType documentType={documentType} />
+                    </Grid>
+                    <Grid item>
+                        <FileEquipmentsType equipments={equipments} />
+                    </Grid>
+                    <Grid item xs={12} />
+                    <Grid item>
+                        <FileAuthor author={author} />
+                    </Grid>
                 </Grid>
-                <FileDocumentType documentType={documentType} />
-                <FileEquipmentsType equipments={equipments} />
-                <FileAuthor author={author} />
+
             </CardContent>
         </Card>
     )
@@ -218,7 +241,7 @@ const FileEquipmentsType = ({ equipments }) => {
 
 
 const FileAuthor = ({ author }) => {
-    return <Card sx={{ background: "#EEEEEE", boxShadow: "none", height: "100%", borderRadius: "30px", mt: 2 }}>
+    return <Card sx={{ background: "#EEEEEE", boxShadow: "none", height: "fit-content", borderRadius: "30px", mb: 4 }}>
         <Grid container direction="row" alignItems="center" justifyContent="center" sx={{ height: "100%", p: 2 }}>
             <Grid item xs>
                 <Typography sx={{ fontWeight: 700 }} textAlign="center" variant="h6" noWrap >

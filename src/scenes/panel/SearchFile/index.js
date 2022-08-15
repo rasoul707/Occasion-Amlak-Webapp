@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Box, Grid, Zoom, Slider, InputLabel, Typography, Select, MenuItem, } from "@mui/material"
+import { Box, Grid, Zoom, Slider, InputLabel, Typography, Select, MenuItem, FormGroup, FormControlLabel, Switch } from "@mui/material"
 import * as React from 'react';
 import AppBar, { Leading } from "../../../components/AppBar"
 import { fileTypesList, typeConvert2Slug, typeFileConvert2Persian } from "../../../constants/file"
@@ -46,6 +46,13 @@ const sortingList = [
 
 const minPrice = 0
 const maxPrice = 100000000
+const stepPrice = 2500000
+
+const minTotalPrice = 0
+const maxTotalPrice = 150000000000
+const stepTotalPrice = 50000000
+
+
 
 const Page = () => {
 
@@ -67,6 +74,9 @@ const Page = () => {
     const [sorting, setSorting] = React.useState('-time')
     // ****
     const [price, setPrice] = React.useState([25000000, 75000000])
+    const [totalPrice, setTotalPrice] = React.useState([25000000000, 125000000000])
+    const [byTotal, setByTotal] = React.useState(false)
+
     const [canBarter, setCanBarter] = React.useState(false)
     const [type, setType] = React.useState([])
     const [district, setDistrict] = React.useState(null)
@@ -86,7 +96,10 @@ const Page = () => {
         closeSnackbar()
 
         const _type = type.map(typeConvert2Slug)
-        let queryParam = `price=${price.join(",")}`
+        let queryParam = ``
+        queryParam = `price=${price.join(",")}`
+        if (byTotal) queryParam = `totalPrice=${totalPrice.join(",")}`
+
         if (canBarter) queryParam += `&canBarter=1`
         if (_type.length) queryParam += `&type=${_type.join(",")}`
         if (district) queryParam += `&district=${district}`
@@ -124,7 +137,14 @@ const Page = () => {
 
     React.useEffect(() => {
         const params = Object.fromEntries(new URLSearchParams(location.search))
-        if (params?.price?.split(",").length) setPrice(params?.price?.split(","))
+        if (params?.price?.split(",").length) {
+            setPrice(params?.price?.split(","))
+            setByTotal(false)
+        }
+        if (params?.totalPrice?.split(",").length) {
+            setTotalPrice(params?.totalPrice?.split(","))
+            setByTotal(true)
+        }
         if (params?.type?.split(",").length) setType(params?.type?.split(",").map(typeFileConvert2Persian))
         setDistrict(params?.district || district)
         setArea(params?.area || area)
@@ -181,6 +201,7 @@ const Page = () => {
                 }
             />}
             files={files}
+            byTotal={byTotal}
         />
     }
 
@@ -190,14 +211,29 @@ const Page = () => {
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
                 <Box sx={{ maxWidth: 400, width: '100%', m: 3, }}>
-                    <AppBar
-                        title={"جستجوی فایل"}
-                        center={false}
-                        titleVariant="h6"
-                        autoLeading={true}
-                    />
-                    <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" >
+
+                    <Grid container direction="column" gap={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                        <AppBar
+                            title={"جستجوی فایل"}
+                            center={false}
+                            titleVariant="h6"
+                            autoLeading={true}
+                        />
                         <Grid item>
+                            <FormGroup>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={byTotal}
+                                            onChange={(e) => setByTotal(e.target.checked)}
+                                        />
+                                    }
+                                    label="جستجو با قیمت کل"
+                                />
+                            </FormGroup>
+                        </Grid>
+
+                        {byTotal || <Grid item>
                             <InputLabel
                                 focused
                                 disableAnimation={true}
@@ -206,13 +242,14 @@ const Page = () => {
                                 محدوده قیمت (هر متر مربع)
                             </InputLabel>
                             <Slider
-                                step={2500000}
+                                step={stepPrice}
                                 min={minPrice}
                                 max={maxPrice}
                                 valueLabelDisplay="auto"
                                 value={price}
                                 onChange={(e, val) => setPrice(val)}
                                 disabled={disabled}
+                                valueLabelFormat={(num) => <NumberFormat value={num} displayType={'text'} thousandSeparator={true} />}
                             />
                             <InputLabel
                                 focused
@@ -228,8 +265,41 @@ const Page = () => {
                                     </span>
                                 </div>
                             </InputLabel>
-                        </Grid>
-                        <Grid item sx={{ pt: "0 !important" }}>
+                        </Grid>}
+                        {byTotal && <Grid item>
+                            <InputLabel
+                                focused
+                                disableAnimation={true}
+                                sx={{ fontSize: ".75rem" }}
+                            >
+                                محدوده قیمت کل
+                            </InputLabel>
+                            <Slider
+                                step={stepTotalPrice}
+                                min={minTotalPrice}
+                                max={maxTotalPrice}
+                                valueLabelDisplay="auto"
+                                value={totalPrice}
+                                onChange={(e, val) => setTotalPrice(val)}
+                                disabled={disabled}
+                                valueLabelFormat={(num) => <NumberFormat value={num} displayType={'text'} thousandSeparator={true} />}
+                            />
+                            <InputLabel
+                                focused
+                                disableAnimation={true}
+                                sx={{ fontSize: ".75rem" }}
+                            >
+                                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                    <span>
+                                        <NumberFormat value={minTotalPrice} displayType={'text'} thousandSeparator={true} />
+                                    </span>
+                                    <span>
+                                        <NumberFormat value={maxTotalPrice} displayType={'text'} thousandSeparator={true} />
+                                    </span>
+                                </div>
+                            </InputLabel>
+                        </Grid>}
+                        <Grid item sx={{ mt: "0 !important" }}>
                             <Checkbox
                                 label="قابل تهاتر"
                                 checked={canBarter}
@@ -283,7 +353,10 @@ const Page = () => {
                                 }}
                             />
                         </Grid>
-                        <Grid item>
+
+                        <Grid item xs={12} />
+
+                        <Grid item sx={{ pb: 2 }}>
                             <LoadingButton
                                 variant="contained"
                                 size="large"

@@ -50,6 +50,7 @@ const Page = () => {
     const [uploading, setUploading] = React.useState(false)
 
     const [price, setPrice] = React.useState(null)
+    const [totalPrice, setTotalPrice] = React.useState(null)
     const [city, setCity] = React.useState(null)
     const [district, setDistrict] = React.useState(null)
     const [quarter, setQuarter] = React.useState(null)
@@ -99,7 +100,10 @@ const Page = () => {
             quarter,
             alley,
             location,
+
             price: parseInt(price),
+            totalPrice: parseInt(totalPrice),
+
             description,
             pictures: [],
             thumb: null,
@@ -178,6 +182,23 @@ const Page = () => {
     }, [])
 
 
+    let size = mainData.area ?? mainData.landArea
+
+    React.useEffect(() => {
+        if (parseInt(totalPrice) > 0) {
+            setPrice(parseInt(totalPrice) / size)
+        }
+    }, [totalPrice])
+
+
+    React.useEffect(() => {
+        if (parseInt(price) > 0) {
+            setTotalPrice(parseInt(price) * size)
+        }
+    }, [price])
+
+
+
     const persianFileType = typeFileConvert2Persian(fileType)
 
     if (success) return <SuccessAdd />
@@ -186,7 +207,7 @@ const Page = () => {
     return (
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
 
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center', height: '100%' }}>
 
                 {fullmap &&
                     <FullMap
@@ -197,145 +218,158 @@ const Page = () => {
                     />
                 }
 
-                <Box sx={{ maxWidth: 400, width: '100%', display: fullmap && "none" }}>
-                    <AppBar
-                        title={"ثبت " + persianFileType}
-                    />
-                    <Box sx={{ m: 3, }}>
-                        <Grid container direction="column" spacing={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
-                            <Grid item>
-                                <ImageChooser
-                                    pictures={pictures}
-                                    setPictures={setPictures}
-                                    thumb={thumbIndex}
-                                    setThumb={setThumbIndex}
-                                    uploaded={uploaded}
-                                    uploading={uploading}
-                                    disabled={disabled}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="قیمت هر متر مربع (تومان)"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={price}
-                                    onChange={(e) => setPrice(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: PriceFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item sx={{ pt: "0 !important" }}>
-                                <Checkbox
-                                    label="قابل تهاتر"
-                                    checked={canBarter}
-                                    onChange={(e) => setCanBarter(e.target.checked)}
-                                    disabled={disabled}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="شهر"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                    disabled={disabled}
-                                    inputProps={{ style: { direction: 'rtl', } }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="منطقه"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={district}
-                                    onChange={(e) => setDistrict(e.target.value)}
-                                    disabled={disabled}
-                                    inputProps={{ style: { direction: 'rtl', } }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="محله"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={quarter}
-                                    onChange={(e) => setQuarter(e.target.value)}
-                                    disabled={disabled}
-                                    inputProps={{ style: { direction: 'rtl', } }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="کوچه"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={alley}
-                                    onChange={(e) => setAlley(e.target.value)}
-                                    disabled={disabled}
-                                    inputProps={{ style: { direction: 'rtl', } }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="نام مالک"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={ownerName}
-                                    onChange={(e) => setOwnerName(e.target.value)}
-                                    disabled={disabled}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="شماره تماس مالک"
-                                    autoComplete="true"
-                                    type="text"
-                                    value={ownerPhone}
-                                    onChange={(e) => setOwnerPhone(e.target.value)}
-                                    disabled={disabled}
-                                    InputProps={{
-                                        inputComponent: PersianPhoneNumberFormatCustom,
-                                    }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <TextField
-                                    label="توضیحات"
-                                    autoComplete="true"
-                                    type="text"
-                                    multiline
-                                    rows={5}
-                                    value={description}
-                                    onChange={(e) => setDescription(e.target.value)}
-                                    disabled={disabled}
-                                    inputProps={{ style: { direction: 'rtl', } }}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <LocationChooser
-                                    location={location}
-                                    setLocation={setLocation}
-                                    disabled={disabled}
-                                    fullMap={() => setFullmap(true)}
-                                />
-                            </Grid>
-                            <Grid item>
-                                <LoadingButton
-                                    variant="contained"
-                                    size="large"
-                                    children={"ثبت " + persianFileType}
-                                    onClick={submit}
-                                    disabled={disabled}
-                                    loading={loading}
-                                    fullWidth
-                                />
-                            </Grid>
+                <Box sx={{ maxWidth: 400, width: '100%', display: fullmap && "none", m: 3, }}>
+
+                    <Grid container direction="column" gap={3} alignItems="stretch" wrap="nowrap" sx={{ height: '100%' }}>
+                        <AppBar
+                            title={"ثبت " + persianFileType}
+                        />
+                        <Grid item>
+                            <ImageChooser
+                                pictures={pictures}
+                                setPictures={setPictures}
+                                thumb={thumbIndex}
+                                setThumb={setThumbIndex}
+                                uploaded={uploaded}
+                                uploading={uploading}
+                                disabled={disabled}
+                            />
                         </Grid>
-                    </Box>
+                        {fileType === "villa" || <Grid item>
+                            <TextField
+                                label="قیمت هر متر مربع (تومان)"
+                                autoComplete="true"
+                                type="text"
+                                value={price}
+                                onChange={(e) => setPrice(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: PriceFormatCustom,
+                                }}
+                            />
+                        </Grid>}
+                        {fileType === "villa" && <Grid item>
+                            <TextField
+                                label="قیمت کل (تومان)"
+                                autoComplete="true"
+                                type="text"
+                                value={totalPrice}
+                                onChange={(e) => setTotalPrice(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: PriceFormatCustom,
+                                }}
+                            />
+                        </Grid>}
+                        <Grid item sx={{ pt: "0 !important" }}>
+                            <Checkbox
+                                label="قابل تهاتر"
+                                checked={canBarter}
+                                onChange={(e) => setCanBarter(e.target.checked)}
+                                disabled={disabled}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="شهر"
+                                autoComplete="true"
+                                type="text"
+                                value={city}
+                                onChange={(e) => setCity(e.target.value)}
+                                disabled={disabled}
+                                inputProps={{ style: { direction: 'rtl', } }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="منطقه"
+                                autoComplete="true"
+                                type="text"
+                                value={district}
+                                onChange={(e) => setDistrict(e.target.value)}
+                                disabled={disabled}
+                                inputProps={{ style: { direction: 'rtl', } }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="محله"
+                                autoComplete="true"
+                                type="text"
+                                value={quarter}
+                                onChange={(e) => setQuarter(e.target.value)}
+                                disabled={disabled}
+                                inputProps={{ style: { direction: 'rtl', } }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="کوچه"
+                                autoComplete="true"
+                                type="text"
+                                value={alley}
+                                onChange={(e) => setAlley(e.target.value)}
+                                disabled={disabled}
+                                inputProps={{ style: { direction: 'rtl', } }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="نام مالک"
+                                autoComplete="true"
+                                type="text"
+                                value={ownerName}
+                                onChange={(e) => setOwnerName(e.target.value)}
+                                disabled={disabled}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="شماره تماس مالک"
+                                autoComplete="true"
+                                type="text"
+                                value={ownerPhone}
+                                onChange={(e) => setOwnerPhone(e.target.value)}
+                                disabled={disabled}
+                                InputProps={{
+                                    inputComponent: PersianPhoneNumberFormatCustom,
+                                }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <TextField
+                                label="توضیحات"
+                                autoComplete="true"
+                                type="text"
+                                multiline
+                                rows={5}
+                                value={description}
+                                onChange={(e) => setDescription(e.target.value)}
+                                disabled={disabled}
+                                inputProps={{ style: { direction: 'rtl', } }}
+                            />
+                        </Grid>
+                        <Grid item>
+                            <LocationChooser
+                                location={location}
+                                setLocation={setLocation}
+                                disabled={disabled}
+                                fullMap={() => setFullmap(true)}
+                            />
+                        </Grid>
+                        <Grid item xs={12} />
+                        <Grid item sx={{ pb: 2 }}>
+                            <LoadingButton
+                                variant="contained"
+                                size="large"
+                                children={"ثبت " + persianFileType}
+                                onClick={submit}
+                                disabled={disabled}
+                                loading={loading}
+                                fullWidth
+                            />
+                        </Grid>
+                    </Grid>
                 </Box>
             </Box>
         </Zoom>

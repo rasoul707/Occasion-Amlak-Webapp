@@ -1,6 +1,6 @@
 /* eslint-disable default-case */
-import { Grid, Typography, Card, Tooltip, CardContent, CardActionArea, Slide, Avatar } from "@mui/material"
-import { Link as LinkRoute } from "react-router-dom";
+import { Grid, Typography, Card, CardContent, CardActionArea, Slide, Avatar } from "@mui/material"
+import { useHistory } from "react-router-dom";
 import * as React from 'react';
 import FilePlaceHolder from "../../../assets/images/file_placeholder.png"
 import BedIcon from '@mui/icons-material/Bed';
@@ -8,12 +8,15 @@ import AspectRatioIcon from '@mui/icons-material/AspectRatio';
 import NumberFormat from 'react-number-format';
 
 
-const FileItem = ({ index, data: file }) => {
+const FileItem = ({ index, data: file, byTotal }) => {
 
     const imageUrl = file?.thumbUrl?.thumbnail[0]
     const price = file?.price
+    const totalPrice = file?.totalPrice
     let title = ""
     let detail = []
+
+    const history = useHistory()
 
 
 
@@ -68,28 +71,31 @@ const FileItem = ({ index, data: file }) => {
     }
 
 
+    const itemClick = () => {
+        history.push(`/file/${file.id}${byTotal ? "?total" : ""}`)
+    }
+
+
     return <Slide direction="up" in={true} mountOnEnter unmountOnExit key={index}>
         <Card sx={{ width: "100%", mb: 2 }}>
-            <Tooltip title={title} arrow followCursor>
-                <CardActionArea component={LinkRoute} to={`/file/${file.id}`}>
-                    <CardContent sx={{ p: "8px !important" }}>
-                        <FileImage alt={title} src={imageUrl} />
-                        <Typography sx={{ fontWeight: 900, pt: 1, pb: 1 }} noWrap variant="subtitle1" color="#111111">
-                            {title}
-                        </Typography>
-                        <Grid container direction="row" spacing={1} alignItems="stretch" justifyContent="center">
-                            {detail.length > 0 &&
-                                <Grid item xs="auto" >
-                                    <FileDetail detail={detail} />
-                                </Grid>
-                            }
-                            <Grid item xs>
-                                <FilePrice price={price} />
+            <CardActionArea onClick={itemClick}>
+                <CardContent sx={{ p: "8px !important" }}>
+                    <FileImage alt={title} src={imageUrl} />
+                    <Typography sx={{ fontWeight: 900, pt: 1, pb: 1 }} noWrap variant="subtitle1" color="#111111">
+                        {title}
+                    </Typography>
+                    <Grid container direction="row" spacing={1} alignItems="stretch" justifyContent="center">
+                        {detail.length > 0 &&
+                            <Grid item xs="auto" >
+                                <FileDetail detail={detail} />
                             </Grid>
+                        }
+                        <Grid item xs>
+                            <FilePrice price={price} totalPrice={totalPrice} byTotal={byTotal} />
                         </Grid>
-                    </CardContent>
-                </CardActionArea>
-            </Tooltip>
+                    </Grid>
+                </CardContent>
+            </CardActionArea>
         </Card>
     </Slide>
 }
@@ -116,14 +122,15 @@ const FileImage = ({ alt, src }) => {
 }
 
 
-export const FilePrice = ({ price }) => {
+export const FilePrice = ({ price, totalPrice, byTotal = false }) => {
+
     return <Card sx={{ background: "#EEEEEE", boxShadow: "none", height: "100%", borderRadius: "50px" }}>
         <Grid container direction="column" alignItems="center" justifyContent="center" sx={{ height: "100%", }}>
             <Typography sx={{ fontWeight: 500 }} lineHeight={1.5} textAlign="center" noWrap variant="subtitle1" color="#555555">
-                هر متر
+                {byTotal ? "قیمت کل" : "هر متر"}
             </Typography>
             <Typography sx={{ fontWeight: 900 }} lineHeight={1.2} textAlign="center" noWrap variant="h6" color="#555555">
-                <NumberFormat value={price} displayType={'text'} thousandSeparator={true} />
+                <NumberFormat value={(byTotal ? totalPrice : price) || 0} displayType={'text'} thousandSeparator={true} />
             </Typography>
             <Typography sx={{ fontWeight: 500 }} lineHeight={1.5} textAlign="center" noWrap variant="subtitle1" color="#555555">
                 تومان

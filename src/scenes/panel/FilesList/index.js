@@ -4,7 +4,7 @@ import * as React from 'react';
 import FileItem from "../FileItem";
 
 
-const FilesList = ({ files, appBar }) => {
+const FilesList = ({ files, appBar, byTotal }) => {
     return (
         <Zoom in={true} mountOnEnter unmountOnExit style={{ transitionDelay: '100ms' }}>
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-start', height: '100%' }}>
@@ -16,6 +16,7 @@ const FilesList = ({ files, appBar }) => {
                                 return <FileItem
                                     index={index}
                                     data={data}
+                                    byTotal={byTotal}
                                 />
                             })
                         }
